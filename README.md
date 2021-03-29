@@ -26,3 +26,16 @@ https://luiscabrera77.github.io/weather-dashboard/
 - THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
 - WHEN I click on a city in the search history
 - THEN I am again presented with current and future conditions for that city
+
+## Bonus Features
+- Refactored the proposed UX to better use the screen real estate
+- Auto Focus on input field allows for easy and faster search
+- Responsive layout
+
+## Roadmap
+- Autocomplete functionality would help avoid errors
+- Change icons for better looking graphics (thinking small videos)
+- Keep improving the looks
+- Adding links or API connection to live webcams
+- Set home screen to user´s location (after permission is given, of course)
+- Sort the history buttons in reverse order
