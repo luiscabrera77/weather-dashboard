@@ -1,36 +1,31 @@
 @media (min-width: 768px) {
   .col-md-5ths {width: 20%;float: left;}
 }
-
+/* UV Index scale according to the EPA */
 .uv1-2 {
 background-color: green;
 color: white;
 }
-
 .uv3-5 {
   background-color: yellow;
   color: black;
 }
-
 .uv6-7 {
   background-color: orange;
   color: white;
 }
-
 .uv8-10 {
   background-color: tomato;
   color: white;
 }
-
 .uv11{
   background-color: purple;
   color: white;
 }
-
+/* Tell user something is not right */
 .badsearch{
   border-color: red;
 }
-
 .badsearch:focus{
   border-color: red;
 }

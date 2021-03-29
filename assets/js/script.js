@@ -3,6 +3,8 @@ var searchedTemp = "90";
 var searchedHumidity = "80%";
 var searchedWind = "16 mph";
 var searchedUVIndex = "230";
+
+// Read local storage to write history and set last seen city
 var searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 if (searchHistory.length === 0) {
   var searchedCity = "Nashville, US";
@@ -11,7 +13,6 @@ else {
   var searchedCity = localStorage.getItem("lastcity");
   //var searchedCity = searchHistory[searchHistory.length - 1];
 }
-var geoCity;//= "48.8534&lon=2.3488"
 
 // write time
 var nowEl = document.querySelector("#now");
@@ -74,11 +75,11 @@ var humidityIcon05 = document.createElement("i");
 humidityIcon05.className = "fas fa-tint";
 
 // forecast dates
-day01Date.textContent = moment().add(1,'d').format('ddd Do');
-day02Date.textContent = moment().add(2,'d').format('ddd Do');
-day03Date.textContent = moment().add(3,'d').format('ddd Do');
-day04Date.textContent = moment().add(4,'d').format('ddd Do');
-day05Date.textContent = moment().add(5,'d').format('ddd Do');
+day01Date.textContent = moment().add(1, 'd').format('ddd Do');
+day02Date.textContent = moment().add(2, 'd').format('ddd Do');
+day03Date.textContent = moment().add(3, 'd').format('ddd Do');
+day04Date.textContent = moment().add(4, 'd').format('ddd Do');
+day05Date.textContent = moment().add(5, 'd').format('ddd Do');
 
 // current conditions container
 var currentConditions = document.createElement("p");
@@ -112,6 +113,7 @@ clearCities.addEventListener("click", function () {
   location.reload();
 })
 
+// history
 var previousCity = document.createElement("button");
 
 // create history buttons
@@ -122,15 +124,15 @@ function updateHistory() {
     previousCity.className = "btn btn-outline-light btn-sm mb-2 px-3 mx-1";
     previousCity.textContent = searchHistory[i];
     previousCity.id = searchHistory[i];
-    previousCity.addEventListener("click", function(){
+    previousCity.addEventListener("click", function () {
       document.getElementById("searchfield").className = "form-control mt-5";
-      document.getElementById("searchfield").placeholder = "Search for a City";
+      document.getElementById("searchfield").placeholder = "Search for a City, or any place you want.";
       searchedCity = this.id;
       //console.log(searchedCity);
       getWeather();
       now.textContent = moment().format('lll');
       localStorage.setItem("lastcity", this.id);
-    });  
+    });
     citiesHistoryEl.appendChild(previousCity);
   }
   citiesHistoryEl.appendChild(clearCities);
@@ -148,13 +150,13 @@ function getWeather() {
       return geoResponse.json();
     })
     .then(function (geoResponse) {
-      console.log(geoResponse);
+      //console.log(geoResponse);
       var x = JSON.stringify(geoResponse.length);
       var y = geoResponse.cod;
-      console.log(y);
-      if (x=="0" || y=="404"){
+      //console.log(y);
+      if (x == "0" || y == "404") {
         document.getElementById("searchfield").className = "form-control mt-5 badsearch";
-        document.getElementById("searchfield").placeholder = "Mhm... Please check that city name (tip: adding country or state helps to disambiguate)";
+        document.getElementById("searchfield").placeholder = "Mhm... Please check name, doesn't seem right";
         return;
       }
       lat = geoResponse[0].lat;
@@ -173,60 +175,60 @@ function getWeather() {
       return cityResponse.json();
     })
     .then(function (cityResponse) {
-    //console.log(cityResponse);
-      
+      //console.log(cityResponse);
+
       var iconNow = cityResponse.current.weather[0].icon;
       var iconToday = document.createElement("img");
-      iconToday.src = "http://openweathermap.org/img/wn/"+iconNow+"@2x.png";
+      iconToday.src = "http://openweathermap.org/img/wn/" + iconNow + "@2x.png";
       currentCity.prepend(iconToday);
 
       currentTemp.textContent = "TEMP " + Math.round(cityResponse.current.temp) + " F";
       currentHumidity.textContent = "HUMIDITY " + Math.round(cityResponse.current.humidity) + "%";
       currentWind.textContent = "WIND " + Math.round(cityResponse.current.wind_speed) + " MPH";
-      
-      if ((Math.round(cityResponse.current.uvi)<3)){
+
+      if ((Math.round(cityResponse.current.uvi) < 3)) {
         currentUVIndex.textContent = "UV INDEX " + Math.round(cityResponse.current.uvi);
         currentUVIndex.className = "mx-3 small strong uv1-2";
-      } else if ((Math.round(cityResponse.current.uvi)>=3)&&(Math.round(cityResponse.current.uvi)<6)){
+      } else if ((Math.round(cityResponse.current.uvi) >= 3) && (Math.round(cityResponse.current.uvi) < 6)) {
         currentUVIndex.textContent = "UV INDEX " + Math.round(cityResponse.current.uvi);
         currentUVIndex.className = "mx-3 small strong uv3-5";
-      } else if ((Math.round(cityResponse.current.uvi)>=6)&&(Math.round(cityResponse.current.uvi)<8)){
+      } else if ((Math.round(cityResponse.current.uvi) >= 6) && (Math.round(cityResponse.current.uvi) < 8)) {
         currentUVIndex.textContent = "UV INDEX " + Math.round(cityResponse.current.uvi);
         currentUVIndex.className = "mx-3 small strong uv6-7";
-      } else if ((Math.round(cityResponse.current.uvi)>=8)&&(Math.round(cityResponse.current.uvi)<10)){
+      } else if ((Math.round(cityResponse.current.uvi) >= 8) && (Math.round(cityResponse.current.uvi) < 10)) {
         currentUVIndex.textContent = "UV INDEX " + Math.round(cityResponse.current.uvi);
         currentUVIndex.className = "mx-3 small strong uv8-10";
-      } else if ((Math.round(cityResponse.current.uvi)>=11)){
+      } else if ((Math.round(cityResponse.current.uvi) >= 11)) {
         currentUVIndex.textContent = "UV INDEX " + Math.round(cityResponse.current.uvi);
         currentUVIndex.className = "mx-3 small strong uv11";
       }
 
       var iconday01 = cityResponse.daily[1].weather[0].icon;
-      day01img.src = "http://openweathermap.org/img/wn/"+iconday01+"@4x.png";
+      day01img.src = "http://openweathermap.org/img/wn/" + iconday01 + "@4x.png";
       day01Temp.textContent = " " + Math.round(cityResponse.daily[1].temp.day) + " F";
       day01Temp.prepend(tempIcon01);
       day01Humidity.textContent = " " + Math.round(cityResponse.daily[1].humidity) + "%";
       day01Humidity.prepend(humidityIcon01);
       var iconday02 = cityResponse.daily[2].weather[0].icon;
-      day02img.src = "http://openweathermap.org/img/wn/"+iconday02+"@4x.png";
+      day02img.src = "http://openweathermap.org/img/wn/" + iconday02 + "@4x.png";
       day02Temp.textContent = " " + Math.round(cityResponse.daily[2].temp.day) + " F";
       day02Temp.prepend(tempIcon02);
       day02Humidity.textContent = " " + Math.round(cityResponse.daily[2].humidity) + "%";
       day02Humidity.prepend(humidityIcon02);
       var iconday03 = cityResponse.daily[3].weather[0].icon;
-      day03img.src = "http://openweathermap.org/img/wn/"+iconday03+"@4x.png";
+      day03img.src = "http://openweathermap.org/img/wn/" + iconday03 + "@4x.png";
       day03Temp.textContent = " " + Math.round(cityResponse.daily[3].temp.day) + " F";
       day03Temp.prepend(tempIcon03);
       day03Humidity.textContent = " " + Math.round(cityResponse.daily[3].humidity) + "%";
       day03Humidity.prepend(humidityIcon03);
       var iconday04 = cityResponse.daily[4].weather[0].icon;
-      day04img.src = "http://openweathermap.org/img/wn/"+iconday04+"@4x.png";
+      day04img.src = "http://openweathermap.org/img/wn/" + iconday04 + "@4x.png";
       day04Temp.textContent = " " + Math.round(cityResponse.daily[4].temp.day) + " F";
       day04Temp.prepend(tempIcon04);
       day04Humidity.textContent = " " + Math.round(cityResponse.daily[4].humidity) + "%";
       day04Humidity.prepend(humidityIcon04);
       var iconday05 = cityResponse.daily[5].weather[0].icon;
-      day05img.src = "http://openweathermap.org/img/wn/"+iconday05+"@4x.png";
+      day05img.src = "http://openweathermap.org/img/wn/" + iconday05 + "@4x.png";
       day05Temp.textContent = " " + Math.round(cityResponse.daily[5].temp.day) + " F";
       day05Temp.prepend(tempIcon05);
       day05Humidity.textContent = " " + Math.round(cityResponse.daily[5].humidity) + "%";
@@ -238,7 +240,6 @@ function getWeather() {
 }
 
 getWeather();
-
 
 //Search functions
 var searchBtn = document.querySelector("#searchbutton");
@@ -267,7 +268,7 @@ searchedCity.addEventListener("keyup", function (event) {
   }
 });
 
-// load latest history and hide clear button if history is empty
+// Update history, hide clear button if history is empty and give focus to search
 updateHistory();
 
 if (searchHistory.length === 0) {
