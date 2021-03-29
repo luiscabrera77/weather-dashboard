@@ -143,7 +143,7 @@ function updateHistory() {
 function getWeather() {
   //console.log(searchedCity);
   fetch(
-    "http://api.openweathermap.org/geo/1.0/direct?q=" + searchedCity + "&limit=1&appid=671217df49ec18f0d17df2fc5f7a9660"
+    "https://api.openweathermap.org/geo/1.0/direct?q=" + searchedCity + "&limit=1&appid=671217df49ec18f0d17df2fc5f7a9660"
   )
     .then(function (geoResponse) {
       //console.log(geoResponse);
@@ -179,7 +179,7 @@ function getWeather() {
 
       var iconNow = cityResponse.current.weather[0].icon;
       var iconToday = document.createElement("img");
-      iconToday.src = "http://openweathermap.org/img/wn/" + iconNow + "@2x.png";
+      iconToday.src = "https://openweathermap.org/img/wn/" + iconNow + "@2x.png";
       currentCity.prepend(iconToday);
 
       currentTemp.textContent = "TEMP " + Math.round(cityResponse.current.temp) + " F";
@@ -204,31 +204,31 @@ function getWeather() {
       }
 
       var iconday01 = cityResponse.daily[1].weather[0].icon;
-      day01img.src = "http://openweathermap.org/img/wn/" + iconday01 + "@4x.png";
+      day01img.src = "https://openweathermap.org/img/wn/" + iconday01 + "@4x.png";
       day01Temp.textContent = " " + Math.round(cityResponse.daily[1].temp.day) + " F";
       day01Temp.prepend(tempIcon01);
       day01Humidity.textContent = " " + Math.round(cityResponse.daily[1].humidity) + "%";
       day01Humidity.prepend(humidityIcon01);
       var iconday02 = cityResponse.daily[2].weather[0].icon;
-      day02img.src = "http://openweathermap.org/img/wn/" + iconday02 + "@4x.png";
+      day02img.src = "https://openweathermap.org/img/wn/" + iconday02 + "@4x.png";
       day02Temp.textContent = " " + Math.round(cityResponse.daily[2].temp.day) + " F";
       day02Temp.prepend(tempIcon02);
       day02Humidity.textContent = " " + Math.round(cityResponse.daily[2].humidity) + "%";
       day02Humidity.prepend(humidityIcon02);
       var iconday03 = cityResponse.daily[3].weather[0].icon;
-      day03img.src = "http://openweathermap.org/img/wn/" + iconday03 + "@4x.png";
+      day03img.src = "https://openweathermap.org/img/wn/" + iconday03 + "@4x.png";
       day03Temp.textContent = " " + Math.round(cityResponse.daily[3].temp.day) + " F";
       day03Temp.prepend(tempIcon03);
       day03Humidity.textContent = " " + Math.round(cityResponse.daily[3].humidity) + "%";
       day03Humidity.prepend(humidityIcon03);
       var iconday04 = cityResponse.daily[4].weather[0].icon;
-      day04img.src = "http://openweathermap.org/img/wn/" + iconday04 + "@4x.png";
+      day04img.src = "https://openweathermap.org/img/wn/" + iconday04 + "@4x.png";
       day04Temp.textContent = " " + Math.round(cityResponse.daily[4].temp.day) + " F";
       day04Temp.prepend(tempIcon04);
       day04Humidity.textContent = " " + Math.round(cityResponse.daily[4].humidity) + "%";
       day04Humidity.prepend(humidityIcon04);
       var iconday05 = cityResponse.daily[5].weather[0].icon;
-      day05img.src = "http://openweathermap.org/img/wn/" + iconday05 + "@4x.png";
+      day05img.src = "https://openweathermap.org/img/wn/" + iconday05 + "@4x.png";
       day05Temp.textContent = " " + Math.round(cityResponse.daily[5].temp.day) + " F";
       day05Temp.prepend(tempIcon05);
       day05Humidity.textContent = " " + Math.round(cityResponse.daily[5].humidity) + "%";
