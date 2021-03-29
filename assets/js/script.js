@@ -8,7 +8,8 @@ if (searchHistory.length === 0) {
   var searchedCity = "Nashville, US";
 }
 else {
-  var searchedCity = searchHistory[searchHistory.length - 1];
+  var searchedCity = localStorage.getItem("lastcity");
+  //var searchedCity = searchHistory[searchHistory.length - 1];
 }
 var geoCity;//= "48.8534&lon=2.3488"
 
@@ -122,10 +123,13 @@ function updateHistory() {
     previousCity.textContent = searchHistory[i];
     previousCity.id = searchHistory[i];
     previousCity.addEventListener("click", function(){
+      document.getElementById("searchfield").className = "form-control mt-5";
+      document.getElementById("searchfield").placeholder = "Search for a City";
       searchedCity = this.id;
       //console.log(searchedCity);
       getWeather();
       now.textContent = moment().format('lll');
+      localStorage.setItem("lastcity", this.id);
     });  
     citiesHistoryEl.appendChild(previousCity);
   }
@@ -135,15 +139,24 @@ function updateHistory() {
 
 // Make nested fetch requests to Open Weather
 function getWeather() {
-  console.log(searchedCity);
+  //console.log(searchedCity);
   fetch(
     "http://api.openweathermap.org/geo/1.0/direct?q=" + searchedCity + "&limit=1&appid=671217df49ec18f0d17df2fc5f7a9660"
   )
     .then(function (geoResponse) {
+      //console.log(geoResponse);
       return geoResponse.json();
     })
     .then(function (geoResponse) {
-      //console.log(geoResponse);
+      console.log(geoResponse);
+      var x = JSON.stringify(geoResponse.length);
+      var y = geoResponse.cod;
+      console.log(y);
+      if (x=="0" || y=="404"){
+        document.getElementById("searchfield").className = "form-control mt-5 badsearch";
+        document.getElementById("searchfield").placeholder = "Mhm... Please check that city name (tip: adding country or state helps to disambiguate)";
+        return;
+      }
       lat = geoResponse[0].lat;
       lon = geoResponse[0].lon;
       geoCity = lat + "&lon=" + lon;
@@ -156,10 +169,11 @@ function getWeather() {
       );
     })
     .then(function (cityResponse) {
+      //console.log(cityResponse);
       return cityResponse.json();
     })
     .then(function (cityResponse) {
-      //console.log(cityResponse);
+    //console.log(cityResponse);
       
       var iconNow = cityResponse.current.weather[0].icon;
       var iconToday = document.createElement("img");
@@ -186,8 +200,6 @@ function getWeather() {
         currentUVIndex.textContent = "UV INDEX " + Math.round(cityResponse.current.uvi);
         currentUVIndex.className = "mx-3 small strong uv11";
       }
-      
-      //console.log(cityResponse.current.weather[0].icon);
 
       var iconday01 = cityResponse.daily[1].weather[0].icon;
       day01img.src = "http://openweathermap.org/img/wn/"+iconday01+"@4x.png";
@@ -220,6 +232,9 @@ function getWeather() {
       day05Humidity.textContent = " " + Math.round(cityResponse.daily[5].humidity) + "%";
       day05Humidity.prepend(humidityIcon05);
     })
+    .catch(function (error) {
+      console.log('Request failed', error);
+    });
 }
 
 getWeather();
@@ -237,6 +252,7 @@ function getSearchedCity() {
   searchedCity = searchedCity.trim();
   searchHistory.push(searchedCity);
   localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+  localStorage.setItem("lastcity", searchedCity);
   document.getElementById("searchfield").value = "";
   updateHistory();
   return searchedCity;
@@ -257,3 +273,4 @@ updateHistory();
 if (searchHistory.length === 0) {
   clearCities.hidden = true;
 }
+searchedCity.focus();

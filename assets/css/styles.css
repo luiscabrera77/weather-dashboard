@@ -26,3 +26,11 @@ color: white;
   background-color: purple;
   color: white;
 }
+
+.badsearch{
+  border-color: red;
+}
+
+.badsearch:focus{
+  border-color: red;
+}
