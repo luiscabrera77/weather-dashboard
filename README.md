@@ -2,6 +2,18 @@
 Allows userto see the weather outlook for multiple cities.
 Uses the OpenWeather API to retrieve weather data for cities.
 
+Other tools used:
+- Font Awesome
+- Bootstrap
+- JQuery
+- MomentJS
+
+## Live app
+https://luiscabrera77.github.io/weather-dashboard/
+
+## Screenshot
+![WeatherDashboard](https://user-images.githubusercontent.com/54341829/112783529-25ee0180-9015-11eb-8b65-1b7e783fcbbe.png)
+
 ## Acceptance Criteria
 - GIVEN a weather dashboard with form inputs
 - WHEN I search for a city
