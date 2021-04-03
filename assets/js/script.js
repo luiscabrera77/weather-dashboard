@@ -29,8 +29,23 @@ currentCity.className = "display-4 text-white text-center mt-5 mb-2";
 currentCity.textContent = "Currently in " + searchedCity;
 currentEl.appendChild(currentCity);
 
-// forecast containers
+// forecast section
 var forecastEl = document.querySelector("#forecast");
+
+// select DIVS and write dates
+var fElements = [];
+for(var i = 1; i <= 5; i++) {
+  fElements.push({
+    dayImg: document.querySelector(`#day${i}img`),
+    dayDate: document.querySelector(`#day${i}date`),
+    dayTemp: document.querySelector(`#day${i}temp`),
+    dayHumidity: document.querySelector(`#day${i}humidity`),
+    dayTime: moment().add(i, 'd').format('ddd Do')
+  });
+}
+
+/* The above replaced the following code:
+
 var day01img = document.querySelector("#day1img");
 var day01Date = document.querySelector("#day1date");
 var day01Temp = document.querySelector("#day1temp");
@@ -80,6 +95,8 @@ day02Date.textContent = moment().add(2, 'd').format('ddd Do');
 day03Date.textContent = moment().add(3, 'd').format('ddd Do');
 day04Date.textContent = moment().add(4, 'd').format('ddd Do');
 day05Date.textContent = moment().add(5, 'd').format('ddd Do');
+
+*/
 
 // current conditions container
 var currentConditions = document.createElement("p");
@@ -202,13 +219,45 @@ function getWeather() {
         currentUVIndex.textContent = "UV INDEX " + Math.round(cityResponse.current.uvi);
         currentUVIndex.className = "mx-3 small strong uv11";
       }
+      
+      var iconday01 = cityResponse.daily[1].weather[0].icon;
+      fElements[0].dayImg.src = "https://openweathermap.org/img/wn/" + iconday01 + "@4x.png";
+      fElements[0].dayTemp.innerHTML = "<i class=\"fas fa-thermometer-half\"></i> " + Math.round(cityResponse.daily[1].temp.day) + " F";
+      fElements[0].dayHumidity.innerHTML = "<i class=\"fas fa-tint\"></i> " + Math.round(cityResponse.daily[1].humidity) + "%";
+      fElements[0].dayDate.innerHTML = fElements[0].dayTime;
 
+      var iconday02 = cityResponse.daily[2].weather[0].icon;
+      fElements[1].dayImg.src = "https://openweathermap.org/img/wn/" + iconday02 + "@4x.png";
+      fElements[1].dayTemp.innerHTML = "<i class=\"fas fa-thermometer-half\"></i> " + Math.round(cityResponse.daily[2].temp.day) + " F";
+      fElements[1].dayHumidity.innerHTML = "<i class=\"fas fa-tint\"></i> " + Math.round(cityResponse.daily[2].humidity) + "%";
+      fElements[1].dayDate.innerHTML = fElements[1].dayTime;
+
+      var iconday03 = cityResponse.daily[3].weather[0].icon;
+      fElements[2].dayImg.src = "https://openweathermap.org/img/wn/" + iconday03 + "@4x.png";
+      fElements[2].dayTemp.innerHTML = "<i class=\"fas fa-thermometer-half\"></i> " + Math.round(cityResponse.daily[3].temp.day) + " F";
+      fElements[2].dayHumidity.innerHTML = "<i class=\"fas fa-tint\"></i> " + Math.round(cityResponse.daily[3].humidity) + "%";
+      fElements[2].dayDate.innerHTML = fElements[2].dayTime;
+
+      var iconday04 = cityResponse.daily[4].weather[0].icon;
+      fElements[3].dayImg.src = "https://openweathermap.org/img/wn/" + iconday04 + "@4x.png";
+      fElements[3].dayTemp.innerHTML = "<i class=\"fas fa-thermometer-half\"></i> " + Math.round(cityResponse.daily[4].temp.day) + " F";
+      fElements[3].dayHumidity.innerHTML = "<i class=\"fas fa-tint\"></i> " + Math.round(cityResponse.daily[4].humidity) + "%";
+      fElements[3].dayDate.innerHTML = fElements[3].dayTime;
+
+      var iconday05 = cityResponse.daily[5].weather[0].icon;
+      fElements[4].dayImg.src = "https://openweathermap.org/img/wn/" + iconday05 + "@4x.png";
+      fElements[4].dayTemp.innerHTML = "<i class=\"fas fa-thermometer-half\"></i> " + Math.round(cityResponse.daily[1].temp.day) + " F";
+      fElements[4].dayHumidity.innerHTML = "<i class=\"fas fa-tint\"></i> " + Math.round(cityResponse.daily[5].humidity) + "%";
+      fElements[4].dayDate.innerHTML = fElements[4].dayTime;
+      
+      /* The above replaced the following code:
       var iconday01 = cityResponse.daily[1].weather[0].icon;
       day01img.src = "https://openweathermap.org/img/wn/" + iconday01 + "@4x.png";
       day01Temp.textContent = " " + Math.round(cityResponse.daily[1].temp.day) + " F";
       day01Temp.prepend(tempIcon01);
       day01Humidity.textContent = " " + Math.round(cityResponse.daily[1].humidity) + "%";
       day01Humidity.prepend(humidityIcon01);
+      
       var iconday02 = cityResponse.daily[2].weather[0].icon;
       day02img.src = "https://openweathermap.org/img/wn/" + iconday02 + "@4x.png";
       day02Temp.textContent = " " + Math.round(cityResponse.daily[2].temp.day) + " F";
@@ -216,23 +265,27 @@ function getWeather() {
       day02Humidity.textContent = " " + Math.round(cityResponse.daily[2].humidity) + "%";
       day02Humidity.prepend(humidityIcon02);
       var iconday03 = cityResponse.daily[3].weather[0].icon;
+      
       day03img.src = "https://openweathermap.org/img/wn/" + iconday03 + "@4x.png";
       day03Temp.textContent = " " + Math.round(cityResponse.daily[3].temp.day) + " F";
       day03Temp.prepend(tempIcon03);
       day03Humidity.textContent = " " + Math.round(cityResponse.daily[3].humidity) + "%";
       day03Humidity.prepend(humidityIcon03);
       var iconday04 = cityResponse.daily[4].weather[0].icon;
+      
       day04img.src = "https://openweathermap.org/img/wn/" + iconday04 + "@4x.png";
       day04Temp.textContent = " " + Math.round(cityResponse.daily[4].temp.day) + " F";
       day04Temp.prepend(tempIcon04);
       day04Humidity.textContent = " " + Math.round(cityResponse.daily[4].humidity) + "%";
       day04Humidity.prepend(humidityIcon04);
       var iconday05 = cityResponse.daily[5].weather[0].icon;
+      
       day05img.src = "https://openweathermap.org/img/wn/" + iconday05 + "@4x.png";
       day05Temp.textContent = " " + Math.round(cityResponse.daily[5].temp.day) + " F";
       day05Temp.prepend(tempIcon05);
       day05Humidity.textContent = " " + Math.round(cityResponse.daily[5].humidity) + "%";
       day05Humidity.prepend(humidityIcon05);
+      */
     })
     .catch(function (error) {
       console.log('Request failed', error);
