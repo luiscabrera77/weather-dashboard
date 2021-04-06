@@ -34,7 +34,7 @@ var forecastEl = document.querySelector("#forecast");
 
 // select DIVS and write dates
 var fElements = [];
-for(var i = 1; i <= 5; i++) {
+for (var i = 1; i <= 5; i++) {
   fElements.push({
     dayImg: document.querySelector(`#day${i}img`),
     dayDate: document.querySelector(`#day${i}date`),
@@ -202,24 +202,30 @@ function getWeather() {
       currentTemp.textContent = "TEMP " + Math.round(cityResponse.current.temp) + " F";
       currentHumidity.textContent = "HUMIDITY " + Math.round(cityResponse.current.humidity) + "%";
       currentWind.textContent = "WIND " + Math.round(cityResponse.current.wind_speed) + " MPH";
+      currentUVIndex.textContent = "UV INDEX " + Math.round(cityResponse.current.uvi);
+      currentUVIndex.className = "mx-3 small strong";
 
       if ((Math.round(cityResponse.current.uvi) < 3)) {
-        currentUVIndex.textContent = "UV INDEX " + Math.round(cityResponse.current.uvi);
-        currentUVIndex.className = "mx-3 small strong uv1-2";
+        currentUVIndex.classList.add("uv1-2");
       } else if ((Math.round(cityResponse.current.uvi) >= 3) && (Math.round(cityResponse.current.uvi) < 6)) {
-        currentUVIndex.textContent = "UV INDEX " + Math.round(cityResponse.current.uvi);
-        currentUVIndex.className = "mx-3 small strong uv3-5";
+        currentUVIndex.classList.add("uv3-5");
       } else if ((Math.round(cityResponse.current.uvi) >= 6) && (Math.round(cityResponse.current.uvi) < 8)) {
-        currentUVIndex.textContent = "UV INDEX " + Math.round(cityResponse.current.uvi);
-        currentUVIndex.className = "mx-3 small strong uv6-7";
+        currentUVIndex.classList.add("uv6-7");
       } else if ((Math.round(cityResponse.current.uvi) >= 8) && (Math.round(cityResponse.current.uvi) < 10)) {
-        currentUVIndex.textContent = "UV INDEX " + Math.round(cityResponse.current.uvi);
-        currentUVIndex.className = "mx-3 small strong uv8-10";
+        currentUVIndex.classList.add("uv8-10");
       } else if ((Math.round(cityResponse.current.uvi) >= 11)) {
-        currentUVIndex.textContent = "UV INDEX " + Math.round(cityResponse.current.uvi);
-        currentUVIndex.className = "mx-3 small strong uv11";
+        currentUVIndex.classList.add("uv11");
       }
-      
+
+      for (var i = 0; i <= 4; i++) {
+        var iconday = cityResponse.daily[i + 1].weather[0].icon;
+        fElements[i].dayImg.src = "https://openweathermap.org/img/wn/" + iconday + "@4x.png";
+        fElements[i].dayTemp.innerHTML = "<i class=\"fas fa-thermometer-half\"></i> " + Math.round(cityResponse.daily[i + 1].temp.day) + " F";
+        fElements[i].dayHumidity.innerHTML = "<i class=\"fas fa-tint\"></i> " + Math.round(cityResponse.daily[i + 1].humidity) + "%";
+        fElements[i].dayDate.innerHTML = fElements[i].dayTime;
+      }
+      /* The above for loop replaced the following code:
+
       var iconday01 = cityResponse.daily[1].weather[0].icon;
       fElements[0].dayImg.src = "https://openweathermap.org/img/wn/" + iconday01 + "@4x.png";
       fElements[0].dayTemp.innerHTML = "<i class=\"fas fa-thermometer-half\"></i> " + Math.round(cityResponse.daily[1].temp.day) + " F";
@@ -250,7 +256,8 @@ function getWeather() {
       fElements[4].dayHumidity.innerHTML = "<i class=\"fas fa-tint\"></i> " + Math.round(cityResponse.daily[5].humidity) + "%";
       fElements[4].dayDate.innerHTML = fElements[4].dayTime;
       
-      /* The above replaced the following code:
+      /* The above commented code replaced the following code:
+
       var iconday01 = cityResponse.daily[1].weather[0].icon;
       day01img.src = "https://openweathermap.org/img/wn/" + iconday01 + "@4x.png";
       day01Temp.textContent = " " + Math.round(cityResponse.daily[1].temp.day) + " F";
